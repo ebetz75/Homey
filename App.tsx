@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Header } from './components/Header';
+import { Header } from './components/Header.tsx';
 import { Navigation } from './components/Navigation';
 import { Dashboard } from './components/Dashboard';
 import { ItemCard } from './components/ItemCard';
