@@ -1,6 +1,6 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
-import { AkanalysisResult, Category, ItemType } from "../types";
+import { AnalysisResult, Category, ItemType } from "../types";
 
 const getAiClient = () => {
   const apiKey = process.env.API_KEY;
@@ -10,7 +10,7 @@ const getAiClient = () => {
   return new GoogleGenAI({ apiKey });
 };
 
-export const analyzeItemImage = async (base64Image: string): Promise<AkanalysisResult> => {
+export const analyzeItemImage = async (base64Image: string): Promise<AnalysisResult> => {
   const ai = getAiClient();
   
   let cleanBase64 = base64Image;
@@ -73,7 +73,7 @@ export const analyzeItemImage = async (base64Image: string): Promise<AkanalysisR
     const text = response.text;
     if (!text) throw new Error("No response from Gemini");
     
-    return JSON.parse(text) as AkanalysisResult;
+    return JSON.parse(text) as AnalysisResult;
   } catch (error) {
     console.error("Gemini Analysis Error:", error);
     throw error;
