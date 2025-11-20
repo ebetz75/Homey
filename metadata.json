@@ -1,0 +1,7 @@
+{
+  "name": "Homey AI",
+  "description": "A smart home inventory ledger powered by Gemini 2.5. Catalog your home items via manual input or AI-powered visual recognition.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
