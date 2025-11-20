@@ -41,7 +41,7 @@ export interface InventoryItem {
   createdAt: number;
 }
 
-export interface AkanalysisResult {
+export interface AnalysisResult {
   name: string;
   category: string;
   room: string;
