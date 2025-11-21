@@ -51,4 +51,4 @@ export interface AnalysisResult {
   condition: string;
 }
 
-export type ViewState = 'DASHBOARD' | 'ADD' | 'SETTINGS' | 'DETAILS';
+export type ViewState = 'DASHBOARD' | 'ADD' | 'SETTINGS' | 'DETAILS' | 'INSURANCE';
