@@ -1,12 +1,14 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { Header } from './components/Header.tsx';
 import { Navigation } from './components/Navigation';
 import { Dashboard } from './components/Dashboard';
+import { InsuranceView } from './components/InsuranceView';
 import { ItemCard } from './components/ItemCard';
 import { CameraModal } from './components/CameraModal';
 import { Category, Condition, InventoryItem, ViewState, ItemType } from './types';
 import { analyzeItemImage } from './services/geminiService';
-import { Loader2, Search, Sparkles, Plus, Save, X, WifiOff, FileText, Download, Trash2, Home, Box, Briefcase, Shield, ShieldCheck, Camera } from 'lucide-react';
+import { Loader2, Search, Sparkles, Save, WifiOff, Download, Trash2, Briefcase, Shield, Camera, ShieldCheck } from 'lucide-react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -217,7 +219,16 @@ const App: React.FC = () => {
   const renderContent = () => {
     switch (view) {
       case 'DASHBOARD':
-        return <Dashboard items={items} policyLimit={policyLimit} />;
+        return <Dashboard items={items} onNavigate={setView} />;
+      
+      case 'INSURANCE':
+        return (
+          <InsuranceView 
+            items={items} 
+            policyLimit={policyLimit} 
+            onGenerateReport={generatePDF}
+          />
+        );
       
       case 'DETAILS':
         return (
@@ -414,17 +425,6 @@ const App: React.FC = () => {
              <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3 px-1">Data Exports</h3>
              <div className="bg-white rounded-xl border border-slate-200 divide-y divide-slate-100">
                
-               <div className="p-4 flex items-center justify-between group cursor-pointer hover:bg-slate-50 transition-colors" onClick={() => generatePDF('INSURANCE')}>
-                 <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-50 text-blue-600 rounded-lg"><FileText size={20} /></div>
-                    <div>
-                      <div className="text-slate-800 font-medium">Insurance Report</div>
-                      <div className="text-xs text-slate-500">Full inventory for claims</div>
-                    </div>
-                 </div>
-                 <Download size={18} className="text-slate-400" />
-               </div>
-
                <div className="p-4 flex items-center justify-between group cursor-pointer hover:bg-slate-50 transition-colors" onClick={() => generatePDF('REAL_ESTATE')}>
                  <div className="flex items-center gap-3">
                     <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg"><Briefcase size={20} /></div>
