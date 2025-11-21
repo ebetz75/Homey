@@ -1,7 +1,7 @@
 
 import React, { useMemo } from 'react';
 import { InventoryItem, Category } from '../types';
-import { ArrowUpRight, Home, Box, Clock, ArrowRight, Wallet, Sparkles, Sofa, Utensils, Bed, Car, Lamp, Smartphone, BarChart3 } from 'lucide-react';
+import { ArrowUpRight, Home, Box, Clock, ArrowRight, Wallet, Sparkles, Sofa, Utensils, Bed, Car, Lamp, Smartphone, BarChart3, PlusCircle, Search } from 'lucide-react';
 import { ItemCard } from './ItemCard';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
@@ -52,33 +52,33 @@ export const Dashboard: React.FC<DashboardProps> = ({ items, onNavigate }) => {
     const n = name.toLowerCase();
     if (n.includes('kitchen')) return { 
       bg: 'bg-gradient-to-br from-orange-500 to-red-500',
-      icon: <Utensils size={22} className="text-white" />,
+      icon: <Utensils size={24} className="text-white" />,
       shadow: 'shadow-orange-200'
     };
     if (n.includes('bed')) return { 
       bg: 'bg-gradient-to-br from-indigo-500 to-purple-600',
-      icon: <Bed size={22} className="text-white" />,
+      icon: <Bed size={24} className="text-white" />,
       shadow: 'shadow-indigo-200'
     };
     if (n.includes('living')) return { 
       bg: 'bg-gradient-to-br from-emerald-500 to-teal-600',
-      icon: <Sofa size={22} className="text-white" />,
+      icon: <Sofa size={24} className="text-white" />,
       shadow: 'shadow-emerald-200'
     };
     if (n.includes('garage')) return { 
       bg: 'bg-gradient-to-br from-slate-600 to-slate-800',
-      icon: <Car size={22} className="text-white" />,
+      icon: <Car size={24} className="text-white" />,
       shadow: 'shadow-slate-200'
     };
     if (n.includes('office') || n.includes('study')) return { 
       bg: 'bg-gradient-to-br from-blue-500 to-cyan-600',
-      icon: <Smartphone size={22} className="text-white" />,
+      icon: <Smartphone size={24} className="text-white" />,
       shadow: 'shadow-blue-200'
     };
-    // Default
+    // Default vibrant fallback
     return { 
       bg: 'bg-gradient-to-br from-violet-500 to-fuchsia-600',
-      icon: <Home size={22} className="text-white" />,
+      icon: <Home size={24} className="text-white" />,
       shadow: 'shadow-violet-200'
     };
   };
@@ -96,9 +96,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ items, onNavigate }) => {
           <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight mb-1">{getGreeting()}</h1>
           <p className="text-slate-500 font-medium">Here is your home overview.</p>
         </div>
-        <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-indigo-600 font-bold text-lg border border-indigo-100 shadow-md shadow-indigo-100">
-           {stats.totalItems}
-        </div>
+        <button 
+          onClick={() => onNavigate('ADD')}
+          className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-lg shadow-indigo-200 active:scale-95 transition-transform"
+        >
+           <PlusCircle size={24} />
+        </button>
       </div>
 
       {/* Main Value Card - Vibrant Gradient */}
@@ -137,12 +140,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ items, onNavigate }) => {
          </div>
       </div>
 
-      {/* Cost Per Room Graph - Mini Dashboard Version */}
+      {/* Cost Per Room Graph */}
       {stats.roomData.length > 0 && (
         <div>
-           <div className="flex items-center gap-2 mb-4 px-1">
-              <BarChart3 size={18} className="text-indigo-500" />
-              <h3 className="font-bold text-slate-800 text-lg">Cost by Room</h3>
+           <div className="flex items-center justify-between mb-4 px-1">
+             <div className="flex items-center gap-2">
+                <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600"><BarChart3 size={18} /></div>
+                <h3 className="font-bold text-slate-800 text-lg">Cost by Room</h3>
+             </div>
            </div>
            <div className="bg-white p-5 rounded-[2rem] shadow-lg shadow-slate-200/50 border border-slate-100">
               <div className="h-40 w-full">
@@ -178,7 +183,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ items, onNavigate }) => {
       <div>
         <div className="flex items-center justify-between mb-5 px-1">
           <h3 className="font-bold text-slate-800 text-lg flex items-center gap-2">
-            <Home size={18} className="text-indigo-500" />
+            <div className="p-2 bg-violet-100 rounded-lg text-violet-600"><Home size={18} /></div>
             <span>Rooms</span>
           </h3>
         </div>
@@ -191,7 +196,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ items, onNavigate }) => {
                <button 
                  key={room.name}
                  onClick={() => onNavigate('DETAILS')}
-                 className={`group relative flex flex-col justify-between h-32 p-5 rounded-[2rem] shadow-lg shadow-slate-200 text-left overflow-hidden transition-all hover:scale-[1.02] active:scale-95 ${config.bg}`}
+                 className={`group relative flex flex-col justify-between h-36 p-5 rounded-[2rem] shadow-lg shadow-slate-200 text-left overflow-hidden transition-all hover:scale-[1.02] active:scale-95 ${config.bg}`}
                >
                   <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-10 -mt-10 blur-xl group-hover:opacity-20 transition-opacity"></div>
                   
@@ -199,20 +204,23 @@ export const Dashboard: React.FC<DashboardProps> = ({ items, onNavigate }) => {
                     {config.icon}
                   </div>
                   <div className="relative z-10">
-                     <div className="font-bold text-lg text-white leading-tight tracking-tight">{room.name}</div>
-                     <div className="text-xs font-medium text-white/80">{count} items</div>
+                     <div className="font-bold text-lg text-white leading-tight tracking-tight drop-shadow-sm">{room.name}</div>
+                     <div className="text-xs font-bold text-white/80 bg-black/10 inline-block px-2 py-0.5 rounded-lg mt-1">{count} items</div>
                   </div>
                </button>
              );
           })}
+          
+          {/* Colorful View All Button */}
           <button 
             onClick={() => onNavigate('DETAILS')}
-            className="flex flex-col items-center justify-center gap-2 h-32 rounded-[2rem] bg-white border border-slate-200 text-slate-400 hover:border-indigo-300 hover:text-indigo-600 hover:shadow-lg hover:shadow-indigo-100 transition-all group"
+            className="flex flex-col items-center justify-center gap-3 h-36 rounded-[2rem] bg-gradient-to-br from-slate-100 to-slate-200 border border-slate-200 hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-100 transition-all group relative overflow-hidden"
           >
-             <div className="bg-indigo-50 p-3 rounded-full group-hover:scale-110 transition-transform">
-               <ArrowRight size={20} className="text-indigo-500" />
+             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+             <div className="bg-white p-4 rounded-full shadow-sm group-hover:scale-110 transition-transform z-10">
+               <ArrowRight size={24} className="text-indigo-600" />
              </div>
-             <span className="text-xs font-bold">View All</span>
+             <span className="text-sm font-bold text-slate-600 z-10 group-hover:text-indigo-700">View All Rooms</span>
           </button>
         </div>
       </div>
@@ -221,12 +229,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ items, onNavigate }) => {
       <div>
         <div className="flex items-center justify-between mb-5 px-1">
           <h3 className="font-bold text-slate-800 text-lg flex items-center gap-2">
-            <Clock size={18} className="text-indigo-500" />
+            <div className="p-2 bg-blue-100 rounded-lg text-blue-600"><Clock size={18} /></div>
             <span>Recent Activity</span>
           </h3>
-          <button onClick={() => onNavigate('DETAILS')} className="text-xs font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 px-4 py-2 rounded-full transition-colors">
-            History
-          </button>
         </div>
         
         <div className="space-y-4">
