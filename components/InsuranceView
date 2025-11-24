@@ -13,7 +13,6 @@ interface InsuranceViewProps {
 // High contrast, vibrant palette
 const COLORS = ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#14b8a6'];
 
-// Move Tooltip outside to prevent re-creation on render and avoid parser confusion
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
