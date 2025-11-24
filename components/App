@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Header } from './components/Header.tsx';
-import { Navigation } from './components/Navigation';
-import { Dashboard } from './components/Dashboard';
-import { InsuranceView } from './components/InsuranceView';
-import { ItemCard } from './components/ItemCard';
-import { CameraModal } from './components/CameraModal';
-import { Category, Condition, InventoryItem, ViewState, ItemType } from './types';
-import { analyzeItemImage } from './services/geminiService';
+import { Header } from './Header';
+import { Navigation } from './Navigation';
+import { Dashboard } from './Dashboard';
+import { InsuranceView } from './InsuranceView';
+import { ItemCard } from './ItemCard';
+import { CameraModal } from './CameraModal';
+import { Category, Condition, InventoryItem, ViewState, ItemType } from '../types';
+import { analyzeItemImage } from '../services/geminiService';
 import { Loader2, Search, Sparkles, Save, WifiOff, Download, Trash2, Briefcase, Shield, Camera, ShieldCheck, ArrowLeft } from 'lucide-react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
