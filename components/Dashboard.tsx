@@ -2,7 +2,7 @@
 import React, { useMemo } from 'react';
 import { InventoryItem, Category } from '../types';
 import { ArrowUpRight, Home, Box, Clock, ArrowRight, Wallet, Sparkles, Sofa, Utensils, Bed, Car, Lamp, Smartphone, BarChart3, PlusCircle, Search } from 'lucide-react';
-import { ItemCard } from './ItemCard';
+import { ItemCard } from './ItemCard.tsx';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 interface DashboardProps {
