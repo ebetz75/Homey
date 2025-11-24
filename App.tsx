@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Header } from './components/Header';
-import { Navigation } from './components/Navigation';
-import { Dashboard } from './components/Dashboard';
-import { InsuranceView } from './components/InsuranceView';
-import { ItemCard } from './components/ItemCard';
-import { CameraModal } from './components/CameraModal';
+import { Header } from './components/Header.tsx';
+import { Navigation } from './components/Navigation.tsx';
+import { Dashboard } from './components/Dashboard.tsx';
+import { InsuranceAnalytics } from './components/InsuranceAnalytics.tsx';
+import { ItemCard } from './components/ItemCard.tsx';
+import { CameraModal } from './components/CameraModal.tsx';
 import { Category, Condition, InventoryItem, ViewState, ItemType } from './types';
-import { analyzeItemImage } from './services/geminiService';
+import { analyzeItemImage } from './services/geminiService.ts';
 import { Loader2, Search, Sparkles, Save, WifiOff, Download, Trash2, Briefcase, Shield, Camera, ShieldCheck, ArrowLeft } from 'lucide-react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -223,7 +223,7 @@ const App: React.FC = () => {
       
       case 'INSURANCE':
         return (
-          <InsuranceView 
+          <InsuranceAnalytics 
             items={items} 
             policyLimit={policyLimit} 
             onGenerateReport={generatePDF}
