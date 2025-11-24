@@ -2,7 +2,7 @@
 import React, { useMemo } from 'react';
 import { InventoryItem, Category } from '../types';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
-import { ShieldCheck, TrendingUp, Download, FileText, AlertTriangle, Home, LayoutGrid, ChevronRight } from 'lucide-react';
+import { ShieldCheck, TrendingUp, Download, FileText, Home, LayoutGrid, ChevronRight } from 'lucide-react';
 
 interface InsuranceViewProps {
   items: InventoryItem[];
@@ -12,6 +12,21 @@ interface InsuranceViewProps {
 
 // High contrast, vibrant palette
 const COLORS = ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#14b8a6'];
+
+// Move Tooltip outside to prevent re-creation on render and avoid parser confusion
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-white p-3 border border-slate-100 shadow-xl rounded-xl z-50">
+        <p className="font-bold text-slate-800 mb-1">{label || payload[0].name}</p>
+        <p className="text-indigo-600 font-semibold">
+          ${payload[0].value.toLocaleString()}
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
 
 export const InsuranceView: React.FC<InsuranceViewProps> = ({ items, policyLimit, onGenerateReport }) => {
   
@@ -47,21 +62,6 @@ export const InsuranceView: React.FC<InsuranceViewProps> = ({ items, policyLimit
   const coveragePct = Math.min((stats.totalValue / policyLimit) * 100, 100);
   const isUnderInsured = stats.totalValue > policyLimit;
   const remainingCoverage = Math.max(policyLimit - stats.totalValue, 0);
-
-  // Custom Tooltip for Charts
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-white p-3 border border-slate-100 shadow-xl rounded-xl z-50">
-          <p className="font-bold text-slate-800 mb-1">{label || payload[0].name}</p>
-          <p className="text-indigo-600 font-semibold">
-            ${payload[0].value.toLocaleString()}
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
 
   return (
     <div className="space-y-6 pb-24 animate-in fade-in duration-500">
