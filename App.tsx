@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Header } from './components/Header.tsx';
-import { Navigation } from './components/Navigation.tsx';
-import { Dashboard } from './components/Dashboard.tsx';
-import { InsuranceAnalytics } from './components/InsuranceAnalytics.tsx';
-import { ItemCard } from './components/ItemCard.tsx';
-import { CameraModal } from './components/CameraModal.tsx';
+import { Header } from './components/Header';
+import { Navigation } from './components/Navigation';
+import { Dashboard } from './components/Dashboard';
+import { InsuranceView } from './components/InsuranceView';
+import { ItemCard } from './components/ItemCard';
+import { CameraModal } from './components/CameraModal';
 import { Category, Condition, InventoryItem, ViewState, ItemType } from './types';
-import { analyzeItemImage } from './services/geminiService.ts';
+import { analyzeItemImage } from './services/geminiService';
 import { Loader2, Search, Sparkles, Save, WifiOff, Download, Trash2, Briefcase, Shield, Camera, ShieldCheck, ArrowLeft } from 'lucide-react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -223,7 +223,7 @@ const App: React.FC = () => {
       
       case 'INSURANCE':
         return (
-          <InsuranceAnalytics 
+          <InsuranceView 
             items={items} 
             policyLimit={policyLimit} 
             onGenerateReport={generatePDF}
@@ -275,28 +275,39 @@ const App: React.FC = () => {
               <div 
                 onClick={() => !isAnalyzing && openCamera('ITEM')}
                 className={`
-                  relative w-full aspect-video rounded-2xl border-2 border-dashed
+                  relative w-full aspect-[4/3] rounded-3xl
                   flex flex-col items-center justify-center cursor-pointer overflow-hidden
-                  transition-all shadow-inner group
-                  ${tempImage ? 'border-transparent' : 'border-indigo-300 bg-indigo-50/50 hover:bg-indigo-50'}
+                  transition-all duration-300 shadow-xl shadow-indigo-200/50 group
+                  ${tempImage ? '' : 'bg-gradient-to-br from-indigo-600 via-purple-600 to-fuchsia-600 hover:scale-[1.02]'}
                 `}
               >
                 {tempImage ? (
                   <>
                     <img src={tempImage} alt="Preview" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                      <div className="bg-white/20 backdrop-blur text-white px-4 py-2 rounded-full font-medium">Retake Photo</div>
+                      <div className="bg-white/20 backdrop-blur text-white px-5 py-2.5 rounded-full font-bold border border-white/20">Retake Photo</div>
                     </div>
                   </>
                 ) : (
                   <>
-                    <div className="w-16 h-16 bg-white text-indigo-600 rounded-full flex items-center justify-center mb-3 shadow-md group-hover:scale-110 transition-transform"><Sparkles size={28} /></div>
-                    <span className="font-bold text-indigo-900">Scan with Gemini AI</span>
-                    <span className="text-xs text-indigo-500 mt-1 font-medium">Auto-detects Room, Type & Value</span>
+                    {/* Decorative Background Elements */}
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+                    <div className="absolute bottom-0 left-0 w-48 h-48 bg-fuchsia-400 opacity-20 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2"></div>
+                    
+                    <div className="relative z-10 flex flex-col items-center">
+                      <div className="w-20 h-20 bg-white/20 backdrop-blur-md border border-white/30 rounded-2xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                        <Camera size={36} className="text-white" strokeWidth={2} />
+                      </div>
+                      <h3 className="text-2xl font-black text-white tracking-tight mb-1">Scan Item</h3>
+                      <div className="flex items-center gap-1.5 text-indigo-100 bg-white/10 px-3 py-1 rounded-full border border-white/10 backdrop-blur-sm">
+                        <Sparkles size={14} className="text-amber-300" />
+                        <span className="text-xs font-bold uppercase tracking-wide">Powered by Gemini</span>
+                      </div>
+                    </div>
                   </>
                 )}
                 {isAnalyzing && (
-                  <div className="absolute inset-0 bg-white/90 flex flex-col items-center justify-center z-10">
+                  <div className="absolute inset-0 bg-white/90 flex flex-col items-center justify-center z-20">
                     <Loader2 size={32} className="animate-spin text-indigo-600 mb-2" />
                     <p className="text-sm font-medium text-indigo-900">Analyzing Image...</p>
                   </div>
