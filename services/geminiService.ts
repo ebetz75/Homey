@@ -21,14 +21,16 @@ export const analyzeItemImage = async (base64Image: string): Promise<AnalysisRes
   }
 
   const prompt = `
-    Analyze this home inventory item.
-    1. Identify the item.
-    2. Estimate conservative resale value (USD).
-    3. Categorize it (${Object.values(Category).join(', ')}).
-    4. Guess the Room it belongs in (e.g. Kitchen, Living Room, Garage).
-    5. Determine if it is "Personal Property" (Moves with owner, e.g. sofa, TV) or a "Fixture" (Stays with house, e.g. Chandelier, Built-in Oven, Water Heater).
-    6. Assess condition.
-    7. Brief description.
+    Analyze this image of a home inventory item. 
+    1. Identify the item name.
+    2. Categorize it into one of: ${Object.values(Category).join(', ')}.
+    3. Determine the room it is likely in (e.g. Kitchen, Living Room, Garage).
+    4. Classify type as either "Personal Property (Moves)" or "Fixture (Stays with Home)".
+    5. Estimate a conservative resale value in USD (number only).
+    6. Provide a brief description (including brand/model if visible).
+    7. Assess condition (New, Like New, Good, Fair, Poor).
+
+    Return raw JSON.
   `;
 
   try {
@@ -48,14 +50,15 @@ export const analyzeItemImage = async (base64Image: string): Promise<AnalysisRes
         ]
       },
       config: {
+        systemInstruction: "You are an expert home insurance adjuster and appraiser. You accurately identify items, estimate values, and categorize home inventory from images.",
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.OBJECT,
           properties: {
             name: { type: Type.STRING },
             category: { type: Type.STRING },
-            room: { type: Type.STRING, description: "e.g. Kitchen, Bedroom" },
-            type: { type: Type.STRING, enum: [ItemType.PERSONAL, ItemType.FIXTURE] },
+            room: { type: Type.STRING },
+            type: { type: Type.STRING },
             estimatedValue: { type: Type.NUMBER },
             description: { type: Type.STRING },
             condition: { type: Type.STRING }
@@ -68,7 +71,10 @@ export const analyzeItemImage = async (base64Image: string): Promise<AnalysisRes
     const text = response.text;
     if (!text) throw new Error("No response from Gemini");
     
-    return JSON.parse(text) as AnalysisResult;
+    // Clean up response if needed (sometimes models wrap in ```json)
+    const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+    
+    return JSON.parse(cleanText) as AnalysisResult;
   } catch (error) {
     console.error("Gemini Analysis Error:", error);
     throw error;
